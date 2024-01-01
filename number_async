@@ -1,0 +1,28 @@
+let baseURL = "http://numbersapi.com";
+
+async function favNumFacts(favNum){
+    let url = `${baseURL}/${favNum}?json`
+    try {
+        let numberData = await axios.get(url)
+        console.log(numberData.data);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+async function favNumsFacts(numArr) {
+    try {
+        let promises = numArr.map(async (num) => {
+            let url = `${baseURL}/${num}?json`;
+            return axios.get(url);
+        });
+
+        let numberData = await Promise.all(promises);
+
+        numberData.forEach((response, index) => {
+            console.log(`Data for ${numArr[index]}:`, response.data);
+        });
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
